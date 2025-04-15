@@ -24,10 +24,10 @@ def add_rul_1(df):
     return result_frame
 
 
-def load_FD001(cut):
+def load_FD001(rul_ub=None):
     """
-
-    :param cut: upper limit for target RULs
+    Load and preprocess the FD001 dataset.
+    :param rul_ub: upper limit for target RULs
     :return: grouped data per sample
     """
     # load data FD001.py
@@ -41,29 +41,30 @@ def load_FD001(cut):
     col_names = index_names + setting_names + sensor_names
 
     # read data
-    train = pd.read_csv((dir_path + 'train_FD001.txt'), sep='\s+', header=None, names=col_names)
-    test = pd.read_csv((dir_path + 'test_FD001.txt'), sep='\s+', header=None, names=col_names)
+    train_data = pd.read_csv((dir_path + 'train_FD001.txt'), sep='\s+', header=None, names=col_names)
+    test_data = pd.read_csv((dir_path + 'test_FD001.txt'), sep='\s+', header=None, names=col_names)
     y_test = pd.read_csv((dir_path + 'RUL_FD001.txt'), sep='\s+', header=None, names=['RUL'])
 
     # drop non-informative features, derived from EDA
     drop_sensors = ['s_1', 's_5', 's_10', 's_16', 's_18', 's_19']
     drop_labels = setting_names + drop_sensors
 
-    train.drop(labels=drop_labels, axis=1, inplace=True)
-    title = train.iloc[:, 0:2]
-    data = train.iloc[:, 2:]
+    train_data.drop(labels=drop_labels, axis=1, inplace=True)
+    title = train_data.iloc[:, 0:2]
+    data = train_data.iloc[:, 2:]
     data_norm = (data - data.min()) / (data.max() - data.min())  # min-max normalization
     # data_norm = (data-data.mean())/data.std()  # standard normalization (optional)
     train_norm = pd.concat([title, data_norm], axis=1)
     train_norm = add_rul_1(train_norm)
     # as in piece-wise linear function, there is an upper limit for target RUL,
     # however, experimental results shows this goes even better without it:
-    # train_norm['RUL'].clip(upper=cut, inplace=True)
+    if rul_ub is not None:
+        train_norm['RUL'].clip(upper=rul_ub, inplace=True)
     group = train_norm.groupby(by="unit_nr")
 
-    test.drop(labels=drop_labels, axis=1, inplace=True)
-    title = test.iloc[:, 0:2]
-    data = test.iloc[:, 2:]
+    test_data.drop(labels=drop_labels, axis=1, inplace=True)
+    title = test_data.iloc[:, 0:2]
+    data = test_data.iloc[:, 2:]
     data_norm = (data - data.min()) / (data.max() - data.min())
     test_norm = pd.concat([title, data_norm], axis=1)
     group_test = test_norm.groupby(by="unit_nr")

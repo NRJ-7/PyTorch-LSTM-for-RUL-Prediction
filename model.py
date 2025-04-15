@@ -13,7 +13,10 @@ class LSTM1(nn.Module):
         self.num_layers = num_layers  # number of layers
         self.seq_length = seq_length  # sequence length
 
-        self.lstm = nn.LSTM(input_size=input_size, hidden_size=hidden_size, num_layers=num_layers, batch_first=True,
+        self.lstm = nn.LSTM(input_size=input_size, 
+                            hidden_size=hidden_size, 
+                            num_layers=num_layers, 
+                            batch_first=True,
                             dropout=0.1)
         self.fc_1 = nn.Linear(hidden_size, 16)  # fully connected 1
         self.fc_2 = nn.Linear(16, 8)  # fully connected 2

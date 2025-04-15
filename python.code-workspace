@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"name": "PyTorch-LSTM-for-RUL-Prediction",
+			"path": "."
+		}
+	],
+	"settings": {}
+}
