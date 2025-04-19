@@ -1,6 +1,6 @@
 from loading_data import *
 from model import *
-from model_2 import *
+from nrj.model_2 import *
 from visualize import *
 import numpy as np
 from main import *
