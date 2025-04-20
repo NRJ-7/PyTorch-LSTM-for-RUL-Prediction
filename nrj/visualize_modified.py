@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-def visualize(result, y_test, num_test, rmse):
+def visualize(result, y_test, num_test, rmse, epoch, writer=None):
     """
 
     :param result: RUL prediction results
@@ -28,5 +28,7 @@ def visualize(result, y_test, num_test, rmse):
     plt.legend()
     plt.xlabel("Samples")
     plt.ylabel("Remaining Useful Life")
+    if writer is not None:
+        writer.add_figure('RUL Prediction', plt.gcf(), epoch)
     # plt.savefig('./_trials/{} RUL Prediction with LSTM.png'.format(round(rmse, 3)))
     plt.show()
