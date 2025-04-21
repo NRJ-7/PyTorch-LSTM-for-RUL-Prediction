@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-def visualize(result, y_test, num_test, rmse, epoch, writer=None):
+def visualize(result, y_test, num_test, rmse, epoch=None, writer=None):
     """
 
     :param result: RUL prediction results
