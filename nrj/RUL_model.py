@@ -194,7 +194,6 @@ class RUL_Model_LearnableStates(nn.Module):
         :return: prediction results
         """
         # Parameters (h0, c0) and input should be on the correct device already
-        device = input_seq.device
 
         is_batched = input_seq.dim() == 3
         if not is_batched:
